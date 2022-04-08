@@ -1,0 +1,26 @@
+﻿@page "/"
+@using Microsoft.AspNetCore.Components.WebAssembly.Infrastructure
+@inject IJSRuntime _js
+@*@section Scripts {
+<script src="~/Pages/Index.cshtml.js"></script>
+}*@
+<PageTitle>Index</PageTitle>
+<button class="btn btn-primary" @onclick="StartAries">Start aries</button>
+
+@code{
+    private IJSObjectReference _module;
+    private async Task StartAries()
+    {
+        await _module.InvokeVoidAsync("doEet2", "right");
+        await _module.InvokeVoidAsync("Check");
+    //await _js.InvokeVoidAsync("startAries");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        _module = await _js.InvokeAsync<IJSObjectReference>("import", "./Pages/Index.razor.js");
+        //await _module.InvokeVoidAsync("doEet", "right");
+    }
+
+}
